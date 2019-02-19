@@ -1,26 +1,45 @@
 import React from "react";
-import {Square} from './Square';
-import {Utils} from './util';
+import { Square } from "./Square";
+import { Utils } from "./util";
 
 export class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
-      xIsNext: true
+      xIsNext: true,
+      gameOn: true
     };
   }
 
   handleSquareClick(index) {
     const squares = this.state.squares.slice();
     // if already a winner or the square already filled.
-    if (Utils.calculateWinner(squares) || squares[index])
-        return;
+    if (Utils.calculateWinner(squares) || squares[index]) return;
     squares[index] = this.state.xIsNext ? "X" : "O";
     this.setState({
       squares: squares,
       xIsNext: !this.state.xIsNext
     });
+    if (Utils.calculateWinner(squares) || Utils.allSquaresFilled(squares)) {
+      this.setState({
+        gameOn: false
+      });
+    }
+  }
+
+  resetBoard() {
+    this.setState({ squares: Array(9).fill(null) , gameOn: true});
+  }
+
+  checkGamePlay() {
+    if (!this.state.gameOn) {
+      return (
+        <div>
+          <button onClick={() => this.resetBoard()}>RESET</button>
+        </div>
+      );
+    }
   }
 
   renderSqaure(i) {
@@ -43,6 +62,7 @@ export class Board extends React.Component {
 
     return (
       <div className="game-holder">
+        <span>{this.checkGamePlay()}</span>
         <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSqaure(0)}

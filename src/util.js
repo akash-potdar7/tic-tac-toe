@@ -22,6 +22,9 @@ export var Utils = (function() {
         }
       }
       return null;
+    },
+    allSquaresFilled: function(squares) {
+      return squares.every(each => each);
     }
   };
 })();
