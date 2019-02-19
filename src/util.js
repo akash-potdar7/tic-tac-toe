@@ -1,5 +1,3 @@
-"use strict";
-
 export var Utils = (function() {
   return {
     calculateWinner: function(squares) {
